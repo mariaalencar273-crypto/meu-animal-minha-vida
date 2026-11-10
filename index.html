@@ -1,0 +1,1938 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐾 Guia do Animal — Aprenda a Cuidar</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #d9b99b 0%, #c9a882 50%, #d9b99b 100%);
+            color: #3b2416;
+            overflow-x: hidden;
+        }
+
+        /* ===== TELA DE MENU PRINCIPAL (OVERLAY) ===== */
+        .tela-inicial {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, #4a2818 0%, #6b3e26 50%, #4a2818 100%);
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 20px;
+            overflow-y: auto;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+        }
+
+        .tela-inicial.escondida {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .tela-inicial h1 {
+            color: #fff8f0;
+            font-size: 2.6rem;
+            text-align: center;
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
+            margin-bottom: 10px;
+            animation: bounce 2s infinite;
+        }
+
+        .tela-inicial .subtitulo {
+            color: #f5e6d3;
+            font-size: 1.15rem;
+            text-align: center;
+            margin-bottom: 30px;
+            max-width: 600px;
+            line-height: 1.6;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .tela-inicial .pergunta {
+            color: #fff8f0;
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .menu-animais {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 16px;
+            max-width: 900px;
+            width: 100%;
+        }
+
+        .menu-animal-btn {
+            background: #fffaf5;
+            border: 3px solid transparent;
+            border-radius: 20px;
+            padding: 16px 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+            color: #3b2416;
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.25);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .menu-animal-btn:hover {
+            transform: translateY(-6px) scale(1.04);
+            border-color: #f5e6d3;
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4);
+        }
+
+        .menu-animal-btn .emoji-grande {
+            font-size: 2.6rem;
+            line-height: 1;
+            height: 3.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .menu-animal-btn .nome {
+            font-weight: bold;
+            font-size: 0.95rem;
+            color: #6b3e26;
+        }
+
+        .tela-inicial .ver-todos {
+            margin-top: 30px;
+            background: transparent;
+            border: 2px solid #f5e6d3;
+            color: #f5e6d3;
+            padding: 12px 28px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .tela-inicial .ver-todos:hover {
+            background: #f5e6d3;
+            color: #4a2818;
+            transform: scale(1.05);
+        }
+
+        .tela-inicial .rodape-menu {
+            margin-top: 25px;
+            color: #d9b99b;
+            font-size: 0.85rem;
+            text-align: center;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #6b3e26, #4a2818, #6b3e26);
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(74, 40, 24, 0.5);
+            position: relative;
+        }
+
+        header h1 {
+            font-size: 2.8rem;
+            color: #fff8f0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.35);
+            animation: bounce 2s infinite;
+        }
+
+        header p {
+            color: #f5e6d3;
+            font-size: 1.2rem;
+            margin-top: 8px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Botão flutuante voltar ao menu */
+        .btn-voltar-menu {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: linear-gradient(135deg, #6b3e26, #4a2818);
+            color: #fff8f0;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.4);
+            z-index: 998;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .btn-voltar-menu:hover {
+            transform: scale(1.06);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55);
+        }
+
+        /* Botão flutuante voltar a ver todos */
+        .btn-ver-todos-flutuante {
+            position: fixed;
+            bottom: 20px;
+            left: 200px;
+            background: linear-gradient(135deg, #8b5e3c, #6b3e26);
+            color: #fff8f0;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.4);
+            z-index: 998;
+            transition: all 0.3s;
+            font-family: inherit;
+            display: none;
+        }
+
+        .btn-ver-todos-flutuante:hover {
+            transform: scale(1.06);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55);
+        }
+
+        .btn-ver-todos-flutuante.visivel {
+            display: block;
+        }
+
+        /* Navegação */
+        nav {
+            background: rgba(107, 62, 38, 0.95);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 12px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(74, 40, 24, 0.4);
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: #f5e6d3;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 8px 20px;
+            border-radius: 25px;
+            transition: all 0.3s;
+        }
+
+        nav a:hover {
+            background: #8b5e3c;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        /* Seções */
+        section {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 30px;
+            background: rgba(255, 248, 240, 0.92);
+            border-radius: 25px;
+            box-shadow: 0 8px 25px rgba(74, 40, 24, 0.3);
+        }
+
+        section h2 {
+            color: #6b3e26;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            border-bottom: 3px dashed #a67c52;
+            padding-bottom: 10px;
+        }
+
+        section h3 {
+            color: #8b5e3c;
+            font-size: 1.4rem;
+            margin: 25px 0 12px;
+        }
+
+        section p {
+            line-height: 1.7;
+            margin-bottom: 12px;
+        }
+
+        /* Modo animal único */
+        body.modo-animal-unico #animais {
+            display: none;
+        }
+
+        body.modo-animal-unico .abas-animais {
+            display: none;
+        }
+
+        body.modo-animal-unico #guia > p {
+            display: none;
+        }
+
+        body.modo-animal-unico .painel-animal {
+            display: none !important;
+        }
+
+        body.modo-animal-unico .painel-animal.ativo {
+            display: block !important;
+        }
+
+        /* Galeria / seleção de animais */
+        .galeria {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .foto-card {
+            background: #fffaf5;
+            border-radius: 20px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(74, 40, 24, 0.25);
+            transition: transform 0.3s;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .foto-card:hover {
+            transform: translateY(-8px) rotate(-2deg);
+        }
+
+        .foto-card .emoji {
+            font-size: 4rem;
+            display: block;
+            margin: 10px 0;
+        }
+
+        .foto-card p {
+            color: #5a3a24;
+            font-weight: 500;
+        }
+
+        .foto-card .nome-animal {
+            display: block;
+            font-weight: bold;
+            color: #6b3e26;
+            margin-top: 4px;
+        }
+
+        /* Cards de dicas rápidas */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .info-card {
+            background: linear-gradient(135deg, #8b5e3c, #6b3e26);
+            color: #fff8f0;
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(74, 40, 24, 0.4);
+            transition: transform 0.3s;
+        }
+
+        .info-card:hover {
+            transform: scale(1.05);
+        }
+
+        .info-card .icone {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .info-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+            color: #fff8f0;
+            margin-top: 0;
+        }
+
+        .info-card p {
+            font-size: 0.95rem;
+            opacity: 0.95;
+            margin: 0;
+        }
+
+        .info-card.com-imagem {
+            padding: 0;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-card.com-imagem img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .info-card.com-imagem .conteudo {
+            padding: 20px;
+        }
+
+        .info-card.com-imagem .icone {
+            font-size: 2rem;
+            margin-bottom: 6px;
+        }
+
+        /* Curiosidades */
+        .curiosidade {
+            background: #f0e0cc;
+            border-left: 5px solid #6b3e26;
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 0 15px 15px 0;
+            transition: all 0.3s;
+        }
+
+        .curiosidade:hover {
+            background: #e6d2b8;
+            transform: translateX(5px);
+        }
+
+        .curiosidade strong {
+            color: #6b3e26;
+        }
+
+        /* Guia de cuidados */
+        .guia-bloco {
+            background: #fffaf5;
+            border: 2px solid #c9a882;
+            border-radius: 20px;
+            padding: 20px 25px;
+            margin: 20px 0;
+            box-shadow: 0 4px 12px rgba(74, 40, 24, 0.2);
+        }
+
+        .guia-bloco h3 {
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Abas de animais */
+        .abas-animais {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .aba-btn {
+            background: #fffaf5;
+            border: 2px solid #c9a882;
+            color: #6b3e26;
+            padding: 10px 18px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .aba-btn:hover {
+            background: #f0e0cc;
+            transform: scale(1.05);
+        }
+
+        .aba-btn.ativa {
+            background: linear-gradient(135deg, #6b3e26, #4a2818);
+            color: white;
+            border-color: #4a2818;
+            box-shadow: 0 4px 12px rgba(74, 40, 24, 0.5);
+        }
+
+        .painel-animal {
+            display: none;
+            animation: aparecer 0.4s ease;
+        }
+
+        .painel-animal.ativo {
+            display: block;
+        }
+
+        @keyframes aparecer {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .painel-animal h3 {
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.6rem;
+        }
+
+        .painel-animal h4 {
+            color: #8b5e3c;
+            margin: 18px 0 8px;
+            font-size: 1.15rem;
+        }
+
+        /* Colunas de dicas dentro dos painéis */
+        .colunas-dicas {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 18px;
+            margin-top: 10px;
+        }
+
+        .coluna-dica {
+            background: #fff;
+            border-radius: 16px;
+            padding: 18px;
+            box-shadow: 0 3px 10px rgba(74, 40, 24, 0.2);
+        }
+
+        .coluna-dica h5 {
+            color: #6b3e26;
+            font-size: 1.05rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .coluna-dica ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .coluna-dica ul li {
+            padding: 6px 0 6px 22px;
+            position: relative;
+            line-height: 1.5;
+            font-size: 0.95rem;
+        }
+
+        .coluna-dica ul li::before {
+            content: "✔";
+            position: absolute;
+            left: 0;
+            color: #8b5e3c;
+            font-weight: bold;
+        }
+
+        /* Dica de ouro (destaque) */
+        .dica-ouro {
+            background: linear-gradient(135deg, #f5e6d3, #e6d2b8);
+            border: 2px solid #a67c52;
+            border-radius: 16px;
+            padding: 16px 20px;
+            margin: 15px 0;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .dica-ouro .icone-ouro {
+            font-size: 1.8rem;
+            flex-shrink: 0;
+        }
+
+        .dica-ouro p {
+            margin: 0;
+            color: #4a2818;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .dica-ouro strong {
+            color: #6b3e26;
+        }
+
+        /* Lista de objetos */
+        .lista-objetos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .objeto-item {
+            background: #fff;
+            border-radius: 14px;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 2px 8px rgba(74, 40, 24, 0.2);
+            transition: transform 0.3s;
+        }
+
+        .objeto-item:hover {
+            transform: translateY(-3px);
+        }
+
+        .objeto-item .obj-emoji {
+            font-size: 1.8rem;
+            flex-shrink: 0;
+        }
+
+        .objeto-item .obj-texto {
+            font-size: 0.92rem;
+            line-height: 1.4;
+        }
+
+        .objeto-item .obj-texto strong {
+            color: #6b3e26;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .alerta {
+            background: #f5e6d3;
+            border-left: 5px solid #a67c52;
+            padding: 15px 20px;
+            border-radius: 0 15px 15px 0;
+            margin: 15px 0;
+        }
+
+        .alerta strong {
+            color: #6b3e26;
+        }
+
+        /* ===== CONSELHEIRO VIRTUAL (CHAT) ===== */
+        .chat-container {
+            background: #fffaf5;
+            border: 2px solid #c9a882;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-top: 20px;
+            box-shadow: 0 4px 16px rgba(74, 40, 24, 0.2);
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, #6b3e26, #4a2818);
+            color: #fff8f0;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: bold;
+            font-size: 1.05rem;
+            flex-wrap: wrap;
+        }
+
+        .chat-header .status {
+            width: 10px;
+            height: 10px;
+            background: #4caf50;
+            border-radius: 50%;
+            display: inline-block;
+            animation: pulsar 1.5s infinite;
+        }
+
+        .chat-header .contexto {
+            margin-left: auto;
+            background: rgba(255, 248, 240, 0.2);
+            padding: 4px 14px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .chat-mensagens {
+            height: 380px;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background: #fff8f0;
+        }
+
+        .msg {
+            max-width: 85%;
+            padding: 12px 16px;
+            border-radius: 16px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            animation: aparecer 0.3s ease;
+        }
+
+        .msg.bot {
+            background: #f0e0cc;
+            color: #3b2416;
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+
+        .msg.user {
+            background: linear-gradient(135deg, #8b5e3c, #6b3e26);
+            color: #fff8f0;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+
+        .msg .sugestoes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 10px;
+        }
+
+        .msg .sugestoes button {
+            background: #fff;
+            border: 1px solid #c9a882;
+            color: #6b3e26;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+        .msg .sugestoes button:hover {
+            background: #6b3e26;
+            color: #fff;
+        }
+
+        .chat-input-area {
+            display: flex;
+            gap: 10px;
+            padding: 14px 16px;
+            background: #fffaf5;
+            border-top: 2px solid #f0e0cc;
+        }
+
+        .chat-input-area input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid #c9a882;
+            border-radius: 25px;
+            font-size: 0.95rem;
+            background: #fff;
+            color: #3b2416;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .chat-input-area input:focus {
+            border-color: #6b3e26;
+        }
+
+        .chat-input-area button {
+            background: linear-gradient(135deg, #6b3e26, #4a2818);
+            color: #fff8f0;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        .chat-input-area button:hover {
+            transform: scale(1.04);
+        }
+
+        /* ===== ONDE ADOTAR / COMPRAR ===== */
+        .adocao-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .adocao-card {
+            background: #fffaf5;
+            border: 2px solid #c9a882;
+            border-radius: 18px;
+            padding: 22px;
+            box-shadow: 0 4px 12px rgba(74, 40, 24, 0.15);
+        }
+
+        .adocao-card h4 {
+            color: #6b3e26;
+            font-size: 1.15rem;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .adocao-card p {
+            font-size: 0.92rem;
+            line-height: 1.6;
+            color: #4a2818;
+        }
+
+        .adocao-card .aviso-legal {
+            background: #fdf3d8;
+            border-left: 4px solid #c9a882;
+            padding: 12px 14px;
+            border-radius: 0 12px 12px 0;
+            margin-top: 12px;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            color: #6b4c33;
+        }
+
+        .adocao-card .aviso-legal strong {
+            color: #8b5e3c;
+        }
+
+        /* Formulário */
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 500px;
+            margin: 20px auto 0;
+        }
+
+        input, textarea, select {
+            padding: 14px;
+            border: 2px solid #c9a882;
+            border-radius: 15px;
+            font-size: 1rem;
+            background: #fffaf5;
+            color: #3b2416;
+            outline: none;
+            transition: border 0.3s;
+            font-family: inherit;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            border-color: #6b3e26;
+        }
+
+        button[type="submit"] {
+            background: linear-gradient(135deg, #6b3e26, #4a2818);
+            color: #fff8f0;
+            border: none;
+            padding: 14px;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(74, 40, 24, 0.5);
+            font-family: inherit;
+        }
+
+        button[type="submit"]:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(74, 40, 24, 0.7);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(135deg, #4a2818, #2e1810);
+            color: #fff8f0;
+            margin-top: 40px;
+            font-size: 1rem;
+        }
+
+        footer .coracao {
+            display: inline-block;
+            animation: pulsar 1s infinite;
+        }
+
+        @keyframes pulsar {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+        }
+
+        /* Animal flutuante */
+        .animal-flutuante {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            font-size: 3.5rem;
+            animation: flutuar 3s ease-in-out infinite;
+            cursor: pointer;
+            z-index: 999;
+            transition: transform 0.3s;
+        }
+
+        .animal-flutuante:hover {
+            transform: scale(1.3) rotate(15deg);
+        }
+
+        @keyframes flutuar {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        /* Mensagem fofa ao clicar */
+        .mensagem-fofa {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: #fffaf5;
+            padding: 30px 50px;
+            border-radius: 25px;
+            box-shadow: 0 10px 40px rgba(74, 40, 24, 0.6);
+            font-size: 1.5rem;
+            color: #6b3e26;
+            font-weight: bold;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 1000;
+            text-align: center;
+        }
+
+        .mensagem-fofa.ativo {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        @media (max-width: 600px) {
+            header h1 { font-size: 1.8rem; }
+            section { margin: 20px 10px; padding: 20px; }
+            section h2 { font-size: 1.5rem; }
+            .guia-bloco { padding: 15px; }
+            .aba-btn { padding: 8px 14px; font-size: 0.9rem; }
+            .tela-inicial h1 { font-size: 1.8rem; }
+            .menu-animais { grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); }
+            .btn-voltar-menu { padding: 10px 14px; font-size: 0.8rem; }
+            .btn-ver-todos-flutuante { left: 160px; padding: 10px 14px; font-size: 0.8rem; }
+            .chat-mensagens { height: 300px; }
+            .chat-header { font-size: 0.9rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== TELA DE MENU PRINCIPAL ===== -->
+    <div class="tela-inicial" id="telaInicial">
+        <h1>🐾 Guia do Animal, Minha Vida 🐾</h1>
+        <p class="subtitulo">
+            Bem-vindo ao guia completo de cuidados! Escolha o seu animal abaixo para começar.
+        </p>
+        <p class="pergunta">Qual é o seu animal? 🐾</p>
+
+        <div class="menu-animais" id="menuAnimais">
+            <button class="menu-animal-btn" onclick="escolherAnimal('chinchila')">
+                <span class="emoji-grande">🐭</span>
+                <span class="nome">Chinchila</span>
+            </button>
+            <button class="menu-animal-btn" onclick="escolherAnimal('hamster')">
+                <span class="emoji-grande">🐹</span>
+                <span class="nome">Hamster</span>
+            </button>
+            <button class="menu-animal-btn" onclick="escolherAnimal('porquinho')">
+                <span class="emoji-grande">🐹</span>
+                <span class="nome">Porquinho-da-Índia</span>
+            </button>
+            <button class="menu-animal-btn" onclick="escolherAnimal('esquilo')">
+                <span class="emoji-grande">🐿️</span>
+                <span class="nome">Esquilo</span>
+            </button>
+            <button class="menu-animal-btn" onclick="escolherAnimal('furao')">
+                <span class="emoji-grande">🦡</span>
+                <span class="nome">Furão</span>
+            </button>
+            <button class="menu-animal-btn" onclick="escolherAnimal('cobra')">
+                <span class="emoji-grande">🐍</span>
+                <span class="nome">Cobra</span>
+            </button>
+            <button class="menu-animal-btn" onclick="escolherAnimal('macaco')">
+                <span class="emoji-grande">🐒</span>
+                <span class="nome">Macaco</span>
+            </button>
+            <button class="menu-animal-btn" onclick="escolherAnimal('cavalo')">
+                <span class="emoji-grande">🐴</span>
+                <span class="nome">Cavalo</span>
+            </button>
+            <button class="menu-animal-btn" onclick="escolherAnimal('coelho')">
+                <span class="emoji-grande">🐰</span>
+                <span class="nome">Coelho</span>
+            </button>
+        </div>
+
+        <button class="ver-todos" onclick="escolherAnimal(null)">
+            🔍 Ver todos os animais
+        </button>
+
+        <p class="rodape-menu">Sempre consulte um veterinário especializado na sua espécie 💕</p>
+    </div>
+
+    <!-- Botões flutuantes -->
+    <button class="btn-voltar-menu" id="btnVoltarMenu" onclick="voltarAoMenu()">
+        🏠 Menu Principal
+    </button>
+    <button class="btn-ver-todos-flutuante" id="btnVerTodos" onclick="verTodosAnimais()">
+        🔄 Ver todos os animais
+    </button>
+
+    <header>
+        <h1>🐾 Guia do Animal, Minha Vida 🐾</h1>
+        <p>Aprenda a cuidar do seu companheiro com dicas de alimentação e objetos essenciais!</p>
+    </header>
+
+    <nav>
+        <a href="#animais">🐾 Escolha o Animal</a>
+        <a href="#guia">📖 Guia Completo</a>
+        <a href="#conselheiro">🤖 Conselheiro</a>
+        <a href="#adocao">📍 Onde Adotar</a>
+        <a href="#contato">💌 Contato</a>
+    </nav>
+
+    <!-- Seleção de animais -->
+    <section id="animais">
+        <h2>🐾 Escolha o Animal</h2>
+        <p>Clique no animal que você tem (ou quer ter) para ver o guia completo de cuidados!</p>
+        <div class="galeria">
+            <div class="foto-card" onclick="abrirAba('chinchila')">
+                <span class="emoji">🐭</span>
+                <p>Chinchila</p>
+                <span class="nome-animal">Pelo de veludo</span>
+            </div>
+            <div class="foto-card" onclick="abrirAba('hamster')">
+                <span class="emoji">🐹</span>
+                <p>Hamster</p>
+                <span class="nome-animal">Pequeno e energético</span>
+            </div>
+            <div class="foto-card" onclick="abrirAba('porquinho')">
+                <span class="emoji">🐹</span>
+                <p>Porquinho-da-Índia</p>
+                <span class="nome-animal">Fofinho e comilão</span>
+            </div>
+            <div class="foto-card" onclick="abrirAba('esquilo')">
+                <span class="emoji">🐿️</span>
+                <p>Esquilo</p>
+                <span class="nome-animal">Saltitante e esperto</span>
+            </div>
+            <div class="foto-card" onclick="abrirAba('furao')">
+                <span class="emoji">🦡</span>
+                <p>Furão</p>
+                <span class="nome-animal">Curioso e brincalhão</span>
+            </div>
+            <div class="foto-card" onclick="abrirAba('cobra')">
+                <span class="emoji">🐍</span>
+                <p>Cobra</p>
+                <span class="nome-animal">Elegante e misteriosa</span>
+            </div>
+            <div class="foto-card" onclick="abrirAba('macaco')">
+                <span class="emoji">🐒</span>
+                <p>Macaco</p>
+                <span class="nome-animal">Inteligente e travesso</span>
+            </div>
+            <div class="foto-card" onclick="abrirAba('cavalo')">
+                <span class="emoji">🐴</span>
+                <p>Cavalo</p>
+                <span class="nome-animal">Majestoso e leal</span>
+            </div>
+            <div class="foto-card" onclick="abrirAba('coelho')">
+                <span class="emoji">🐰</span>
+                <p>Coelho</p>
+                <span class="nome-animal">Orelhudo e carinhoso</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Guia de Cuidados por Animal -->
+    <section id="guia">
+        <h2>📖 Guia Completo de Cuidados</h2>
+        <p>
+            Cada animal tem necessidades próprias. Escolha um abaixo para ver as dicas
+            de <strong>alimentação</strong>, <strong>objetos essenciais</strong> e
+            <strong>cuidados especiais</strong>. Sempre consulte um veterinário especializado na espécie!
+        </p>
+
+        <div class="abas-animais" id="abasAnimais">
+            <button class="aba-btn" data-animal="chinchila">🐭 Chinchila</button>
+            <button class="aba-btn" data-animal="hamster">🐹 Hamster</button>
+            <button class="aba-btn" data-animal="porquinho">🐹 Porquinho-da-Índia</button>
+            <button class="aba-btn" data-animal="esquilo">🐿️ Esquilo</button>
+            <button class="aba-btn" data-animal="furao">🦡 Furão</button>
+            <button class="aba-btn" data-animal="cobra">🐍 Cobra</button>
+            <button class="aba-btn" data-animal="macaco">🐒 Macaco</button>
+            <button class="aba-btn" data-animal="cavalo">🐴 Cavalo</button>
+            <button class="aba-btn" data-animal="coelho">🐰 Coelho</button>
+        </div>
+
+        <!-- CHINCHILA -->
+        <div class="guia-bloco painel-animal" id="painel-chinchila">
+            <h3>🐭 Chinchila</h3>
+            <p><strong>Origem:</strong> Andes, América do Sul · <strong>Expectativa de vida:</strong> 10–15 anos · <strong>Hábitos:</strong> noturna</p>
+
+            <h4>🍖 Alimentação</h4>
+            <div class="colunas-dicas">
+                <div class="coluna-dica">
+                    <h5>✅ O que dar</h5>
+                    <ul>
+                        <li><strong>Feno de gramíneas à vontade 24h</strong> — base da dieta</li>
+                        <li>Ração específica para chinchilas (pequena quantidade)</li>
+                        <li>Petiscos raros: passas, maçã seca (bem pouco)</li>
+                    </ul>
+                </div>
+                <div class="coluna-dica">
+                    <h5>🚫 O que evitar</h5>
+                    <ul>
+                        <li>Açúcar, chocolate e doces</li>
+                        <li>Alimentos gordurosos</li>
+                        <li>Frutas frescas em excesso</li>
+                        <li>Mudanças bruscas de alimento</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="dica-ouro">
+                <span class="icone-ouro">🥇</span>
+                <p><strong>Dica de ouro:</strong> ofereça feno de <em>capim timothy</em> ou <em>capim orchard</em> — são os mais indicados e ajudam a desgastar os dentes.</p>
+            </div>
+
+            <h4>🛠️ Objetos essenciais</h4>
+            <div class="lista-objetos">
+                <div class="objeto-item"><span class="obj-emoji">🏠</span><div class="obj-texto"><strong>Gaiola alta com prateleiras</strong>Elas adoram escalar e precisam de espaço vertical</div></div>
+                <div class="objeto-item"><span class="obj-emoji">🪨</span><div class="obj-texto"><strong>Areia vulcânica</strong>Para banho de areia (nunca banho de água!)</div></div>
+                <div class="objeto-item"><span class="obj-emoji">🪵</span><div class="obj-texto"><strong>Piso sólido</strong>Nunca grade — protege as patinhas</div></div>
+                <div class="objeto-item"><span class="obj-emoji">❄️</span><div class="obj-texto"><strong>Pedra de resfriamento</strong>Ajuda no controle de temperatura</div></div>
+                <div class="objeto-item"><span class="obj-emoji">🕳️</span><div class="obj-texto"><strong>Toca/esconderijo</strong>Para se sentir seguro</div></div>
+                <div class="objeto-item"><span class="obj-emoji">🌡️</span><div class="obj-texto"><strong>Termômetro</strong>Ambiente ideal: 15°C a 22°C</div></div>
+            </div>
+            <div class="alerta"><strong>⚠️ Atenção:</strong> são noturnas e sensíveis a barulho. Evite estresse e mudanças bruscas. Não dê banho de água!</div>
+        </div>
+
+        <!-- HAMSTER -->
+        <div class="guia-bloco painel-animal" id="painel-hamster">
+            <h3>🐹 Hamster</h3>
+            <p><strong>Origem:</strong> Síria, China e Europa · <strong>Expectativa de vida:</strong> 2–3 anos · <strong>Hábitos:</strong> noturno</p>
+
+            <h4>🍖 Alimentação</h4>
+            <div class="colunas-dicas">
+                <div class="coluna-dica">
+                    <h5>✅ O que dar</h5>
+                    <ul>
+                        <li>Ração própria para hamsters (mistura de sementes)</li>
+                        <li>Pequenas porções de vegetais frescos (cenoura, brócolis, pepino)</li>
+                        <li>Petiscos raros: nozes, sementes de girassol</li>
+                    </ul>
+                </div>
+                <div class="coluna-dica">
+                    <h5>🚫 O que evitar</h5>
+                    <ul>
+                        <li>Chocolate, doces e salgados</li>
+                        <li>Cítricos (laranja, limão)</li>
+                        <li>Alimentos com muito açúcar</li>
+                        <li>Excesso de sementes de girassol (engorda)</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="dica-ouro">
+                <span class="icone-ouro">🥇</span>
+                <p><strong>Dica de ouro:</strong> ofereça vegetais <em>lavados e secos</em>. Retire o que não for consumido em algumas horas para evitar fermentação.</p>
+            </div>
+
+            <h4>🛠️ Objetos essenciais</h4>
+            <div class="lista-objetos">
+                <div class="objeto-item"><span class="obj-emoji">🏠</span><div class="obj-texto"><strong>Gaiola com fundo sólido</strong>Nunca grade no chão — machuca as patas</div></div>
+                <div class="objeto-item"><span class="obj-emoji">🎡</span><div class="obj-texto"><strong>Roda de exercício</strong>Sem grades que prendam as patas — tamanho adequado</div></div>
+                <div class="objeto-item"><span class="obj-emoji">🪵</span><div class="obj-texto"><strong>Maravalha ou papel picado</strong>Para cavar e se esconder</div></div>
+                <div class="objeto-item"><span class="obj-emoji">🕳️</span><div class="obj-texto"><strong>Túneis e casinhas</strong>Para se sentir seguro</div></div>
+                <div class="objeto-item"><span class="obj-emoji">🥤</span><div class="obj-texto"><strong>Bebedouro de garrafa</strong>Água limpa sempre disponível</div></div>
+                <div class="objeto-item"><span class="obj-emoji">🪥</span><div class="obj-texto"><strong>Bloco de cálcio</strong>Para os dentes e ossos</div></div>
+            </div>
+            <div class="alerta"><strong>⚠️ Atenção:</strong> são solitários — geralmente devem ficar sozinhos na gaiola. Precisam de exercício diário na roda.</div>
+        </div>
+
+        <!-- PORQUINHO-DA-ÍNDIA -->
+        <div class="guia-bloco painel-animal" id="painel-porquinho">
+            <h3>🐹 Porquinho-da-Índia</h3>
+            <p><strong>Origem:</strong> Andes, América do Sul · <strong>Expectativa de vida:</strong> 5–7 anos · <strong>Hábitos:</strong> diurno e crepuscular</p>
+
+            <h4>🍖 Alimentação</h4>
+            <div class="colunas-dicas">
+                <div class="coluna-dica">
+                    <h5>✅ O que dar</h5>
+                    <ul>
+                        <li><strong>Feno de gramíneas à vontade 24h</strong> — base da dieta</li>
+                        <li><strong>Vitamina C diária</strong> (essencial! eles não produzem sozinhos)</li>
+                        <li>Vegetais ricos em vitamina C: pimentão vermelho, couve, brócolis</li>
+                        <li>Ração específica para porquinhos-da-índia (com vitamina C)</li>
+                        <li>Água fresca sempre disponível</li>
+                    </ul>
+                </div>
+                <div class="coluna-dica">
+                    <h5>🚫 O que evitar</h5>
+                    <ul>
+                        <li>Alimentos com açúcar e doces</li>
+                        <li>Alface iceberg (pouco nutritiva)</li>
+                        <li>Frutas em excesso (alto açúcar)</li>
+                        <li>Mudanças bruscas de alimento</li>
+                        <li>Ração de coelho (não tem vitamina C)</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="dica-ouro">
+                <span class="icone-ouro">🥇</span>
+                <p><strong>Dica de ouro:</strong> o porquinho-da-índia <em>não produz vitamina C</em> e precisa receber diariamente! Ofereça pimentão vermelho, couve ou um suplemento indicado pelo veterinário. A falta causa escorbuto.</p>
+            </div>
+
+            <h4>🛠️ Objetos essenciais</h4>
+            <div class="lista-objetos">
+                <div class="objeto-item"><span class="obj-emoji">🏠</span><div class="obj-texto"><strong>Gaiola ampla com fundo sólido</strong>Espaço para correr — nunca grade no chão</div></div>
+                <div class="objeto-item"><span class="obj-emoji">🪵</span><div class="obj-texto"><strong>Maravalha ou papel picado</strong>Para cavar e se esconder</div></div>
+                <div class="objeto-item"><span class="obj-emoji">🕳️</span><div class="obj-texto"><strong>Toca/esconderijo</strong>Eles adoram se esconder</div></div>
+                <div class="objeto-item"><span class="obj-emoji">🥤</span><div class="obj-texto"><strong>Bebedouro de garrafa</strong>Água limpa sempre disponível</div></div>
+                <div class="objeto-item"><span class="obj-emoji">🪥</span><div class="obj-texto"><strong>Bloco de cálcio ou galhos seguros</strong>Para desgastar os dentes</div></div>
+                <div class="objeto-item"><span class="obj-emoji">🥬</span><div class="obj-texto"><strong>Comedouro pesado</strong>Para ração e vegetais</div></div>
+            </div>
+            <div class="alerta"><strong>⚠️ Atenção:</strong> são animais <strong>sociais</strong> — preferem viver em pares ou grupos. Precisam de vitamina C diária e consultas regulares ao veterinário.</div>
+        </div>
+
+        <!-- ESQUILO -->
+        <div class="guia-bloco painel-animal" id="painel-esquilo">
+            <h3>🐿️ Esquilo</h3>
+            <p><strong>Origem:</strong> Américas, Ásia e Europa · <strong>Expectativa de vida:</strong> 6–12 anos · <strong>Hábitos:</strong> diurno</p>
+
+            <h4>🍖 Alimentação</h4>
+            <div class="colunas-dicas">
+                <div class="coluna-dica">
+                    <h5>✅ O que dar</h5>
+                    <ul>
+                        <li>Nozes e sementes variadas</li>
+                        <li>Frutas e vegetais frescos</li>
+                        <li>Ração específica para esquilos</li>
+                        <li>Fonte de cálcio (ossinho ou suplemento)</li>
+                    </ul>
+                </div>
+                <div class="coluna-dica">
+                    <h5>🚫 O que evitar</h5>
+                    <ul>
+                        <li>Alimentos processados e salgados</li>
+                        <li>Doces e chocolates</li>
+                        <li>Excesso de nozes (engorda)</li>
+                        <li>Comida humana temperada</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="dica-ouro">
+                <span class="icone-ouro">🥇</span>
+                <p><strong>Dica de ouro:</strong> esconda petiscos em brinquedos ou pela gaiola — isso estimula o instinto natural de busca e mantém o esquilo entretido.</p>
+            </div>
+
+            <h4>🛠️ Objetos essenciais</h4>
+            <div class="lista-objetos">
+                <div class="objeto-item"><span class="obj-emoji">🏠</span><div class="obj-texto"><strong>Gaiola ampla com poleiros</strong>Espaço vertical para escalar</div></div>
+                <div class="objeto-item"><span class="obj-emoji">🪢</span><div class="obj-texto"><strong>Cordas e brinquedos</strong>Para escalar e se exercitar</div></div>
+                <div class="objeto-item"><span class="obj-emoji">🕳️</span><div class="obj-texto"><strong>Toca/esconderijo</strong>Para dormir e se sentir seguro</div></div>
+                <div class="objeto-item"><span class="obj-emoji">🪵</span><div class="obj-texto"><strong>Galhos seguros</strong>Para roer e desgastar os dentes</div></div>
+                <div class="objeto-item"><span class="obj-emoji">🥤</span><div class="obj-texto"><strong>Bebedouro</strong>Água fresca sempre disponível</div></div>
+                <div class="objeto-item"><span class="obj-emoji">🧩</span><div class="obj-texto"><strong>Brinquedos de enriquecimento</strong>Para estimular o cérebro</div></div>
+            </div>
+            <div class="alerta"><strong>⚠️ Atenção:</strong> em muitos lugares a criação de esquilos é regulamentada. Verifique a legislação local e consulte um veterinário de animais silvestres.</div>
+        </div>
+
+        <!-- FURÃO -->
+        <div class="guia-bloco painel-animal" id="painel-furao">
+            <h3>🦡 Furão</h3>
+            <p><strong>Origem:</strong> Europa · <strong>Expectativa de vida:</strong> 6–10 anos · <strong>Hábitos:</strong> crepuscular (ativo ao amanhecer e anoitecer)</p>
+
+            <h4>🍖 Alimentação</h4>
+            <div class="colunas-dicas">
+                <div class="coluna-dica">
+                    <h5>✅ O que dar</h5>
+                    <ul>
+                        <li><strong>Ração específica para furões</strong> (rica em proteína animal)</li>
+                        <li>Carne crua ou cozida sem tempero (complemento)</li>
+                        <li>Água fresca sempre disponível</li>
+                    </ul>
+                </div>
+                <div class="coluna-dica">
+                    <h5>🚫 O que evitar</h5>
+                    <ul>
+                        <li><strong>Açúcar e frutas</strong> (carnívoro obrigatório!)</li>
+                        <li>Vegetais</li>
+                        <li>Ração de gato comum</li>
+                        <li>Chocolate e doces</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="dica-ouro">
+                <span class="icone-ouro">🥇</span>
+                <p><strong>Dica de ouro:</strong> furões são carnívoros estritos — a dieta deve ser <em>baseada em proteína animal</em>. Nunca ofereça açúcar ou vegetais.</p>
+            </div>
+
+            <h4>🛠️ Objetos essenciais</h4>
+            <div class="lista-objetos">
+                <div class="objeto-item"><span class="obj-emoji">🏠</span><div class="obj-texto"><strong>Gaiola grande com plataformas</strong>Várias alturas e redes para escalar</div></div>
+                <div class="objeto-item"><span class="obj-emoji">🚽</span><div class="obj-texto"><strong>Caixa de areia</strong>Eles aprendem rápido a usar</div></div>
+                <div class="objeto-item"><span class="obj-emoji">🪢</span><div class="obj-texto"><strong>Redes e hamacas</strong>Para dormir e brincar</div></div>
+                <div class="objeto-item"><span class="obj-emoji">🧸</span><div class="obj-texto"><strong>Brinquedos variados</strong>Eles se entediam rápido</div></div>
+                <div class="objeto-item"><span class="obj-emoji">🥤</span><div class="obj-texto"><strong>Bebedouro pesado</strong>Eles derrubam tudo!</div></div>
+                <div class="objeto-item"><span class="obj-emoji">🔒</span><div class="obj-texto"><strong>Travas de segurança</strong>São mestres do escape</div></div>
+            </div>
+            <div class="alerta"><strong>⚠️ Atenção:</strong> precisam de vacinas e check-ups regulares. São muito brincalhões e exigem atenção diária e tempo fora da gaiola.</div>
+        </div>
+
+        <!-- COBRA -->
+        <div class="guia-bloco painel-animal" id="painel-cobra">
+            <h3>🐍 Cobra</h3>
+            <p><strong>Origem:</strong> varia conforme a espécie · <strong>Expectativa de vida:</strong> 10–30 anos · <strong>Hábitos:</strong> varia conforme a espécie</p>
+
+            <h4>🍖 Alimentação</h4>
+            <div class="colunas-dicas">
+                <div class="coluna-dica">
+                    <h5>✅ O que dar</h5>
+                    <ul>
+                        <li><strong>Presas inteiras</strong> (ratos ou camundongos, conforme o tamanho)</li>
+                        <li>Presas <strong>congeladas e descongeladas</strong></li>
+                        <li>Alimentação a cada 1–2 semanas</li>
+                        <li>Água fresca em recipiente raso</li>
+                    </ul>
+                </div>
+                <div class="coluna-dica">
+                    <h5>🚫 O que evitar</h5>
+                    <ul>
+                        <li><strong>Presas vivas</strong> (podem ferir a cobra)</li>
+                        <li>Alimentos processados</li>
+                        <li>Alimentar durante a troca de pele</li>
+                        <li>Excesso de alimento (obesidade)</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="dica-ouro">
+                <span class="icone-ouro">🥇</span>
+                <p><strong>Dica de ouro:</strong> use pinças para oferecer a presa e nunca manuseie a cobra logo após a alimentação — ela precisa de tempo para digerir.</p>
+            </div>
+
+            <h4>🛠️ Objetos essenciais</h4>
+            <div class="lista-objetos">
+                <div class="objeto-item"><span class="obj-emoji">🏠</span><div class="obj-texto"><strong>Terrário à prova de fugas</strong>Tampa bem presa é essencial</div></div>
+                <div class="objeto-item"><span class="obj-emoji">🌡️</span><div class="obj-texto"><strong>Termômetro e termostato</strong>Controle rigoroso de temperatura</div></div>
+                <div class="objeto-item"><span class="obj-emoji">💡</span><div class="obj-texto"><strong>Lâmpada ou tapete térmico</strong>Gradiente de temperatura</div></div>
+                <div class="objeto-item"><span class="obj-emoji">💧</span><div class="obj-texto"><strong>Higrômetro</strong>Controle de umidade para troca de pele</div></div>
+                <div class="objeto-item"><span class="obj-emoji">🕳️</span><div class="obj-texto"><strong>Esconderijos</strong>Para se sentir segura</div></div>
+                <div class="objeto-item"><span class="obj-emoji">🥣</span><div class="obj-texto"><strong>Recipiente de água pesado</strong>Raso e firme</div></div>
+            </div>
+            <div class="alerta"><strong>⚠️ Atenção:</strong> muitas espécies exigem autorização do IBAMA ou órgão ambiental. Consulte um veterinário de animais silvestres e verifique a legislação.</div>
+        </div>
+
+        <!-- MACACO -->
+        <div class="guia-bloco painel-animal" id="painel-macaco">
+            <h3>🐒 Macaco</h3>
+            <p><strong>Origem:</strong> varia conforme a espécie · <strong>Expectativa de vida:</strong> 15–40 anos · <strong>Hábitos:</strong> diurno</p>
+
+            <h4>🍖 Alimentação</h4>
+            <div class="colunas-dicas">
+                <div class="coluna-dica">
+                    <h5>✅ O que dar</h5>
+                    <ul>
+                        <li>Frutas variadas</li>
+                        <li>Vegetais e folhas</li>
+                        <li>Ração específica para primatas</li>
+                        <li>Dieta balanceada conforme a espécie</li>
+                    </ul>
+                </div>
+                <div class="coluna-dica">
+                    <h5>🚫 O que evitar</h5>
+                    <ul>
+                        <li>Comida humana processada</li>
+                        <li>Doces e salgados</li>
+                        <li>Alimentos tóxicos (consulte veterinário)</li>
+                        <li>Dieta monótona (só fruta)</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="dica-ouro">
+                <span class="icone-ouro">🥇</span>
+                <p><strong>Dica de ouro:</strong> a dieta deve ser <em>variada e balanceada</em>, definida por um veterinário especializado em primatas — cada espécie tem necessidades diferentes.</p>
+            </div>
+
+            <h4>🛠️ Objetos essenciais</h4>
+            <div class="lista-objetos">
+                <div class="objeto-item"><span class="obj-emoji">🏠</span><div class="obj-texto"><strong>Espaço muito amplo</strong>Com poleiros, cordas e brinquedos</div></div>
+                <div class="objeto-item"><span class="obj-emoji">🧩</span><div class="obj-texto"><strong>Brinquedos de enriquecimento</strong>Eles são extremamente inteligentes</div></div>
+                <div class="objeto-item"><span class="obj-emoji">🪢</span><div class="obj-texto"><strong>Cordas e balanços</strong>Para se exercitar e brincar</div></div>
+                <div class="objeto-item"><span class="obj-emoji">🕳️</span><div class="obj-texto"><strong>Tocas e esconderijos</strong>Para descanso e segurança</div></div>
+                <div class="objeto-item"><span class="obj-emoji">🥤</span><div class="obj-texto"><strong>Bebedouro resistente</strong>Água limpa sempre disponível</div></div>
+                <div class="objeto-item"><span class="obj-emoji">🔒</span><div class="obj-texto"><strong>Travas e proteções</strong>Eles abrem tudo!</div></div>
+            </div>
+            <div class="alerta"><strong>⚠️ Atenção:</strong> a criação de primatas é <strong>rigorosamente regulamentada</strong> no Brasil e em muitos países. Verifique a legislação e considere a complexidade ética e legal antes de qualquer decisão.</div>
+        </div>
+
+        <!-- CAVALO -->
+        <div class="guia-bloco painel-animal" id="painel-cavalo">
+            <h3>🐴 Cavalo</h3>
+            <p><strong>Origem:</strong> domesticado há milhares de anos · <strong>Expectativa de vida:</strong> 25–30 anos · <strong>Hábitos:</strong> diurno</p>
+
+            <h4>🍖 Alimentação</h4>
+            <div class="colunas-dicas">
+                <div class="coluna-dica">
+                    <h5>✅ O que dar</h5>
+                    <ul>
+                        <li><strong>Feno e pasto à vontade</strong> — base da dieta</li>
+                        <li>Ração específica para cavalos</li>
+                        <li>Sal mineral</li>
+                        <li>Água fresca sempre disponível</li>
+                    </ul>
+                </div>
+                <div class="coluna-dica">
+                    <h5>🚫 O que evitar</h5>
+                    <ul>
+                        <li>Alimentos mofados</li>
+                        <li>Chocolate e doces</li>
+                        <li>Comida humana temperada</li>
+                        <li>Mudanças bruscas de ração</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="dica-ouro">
+                <span class="icone-ouro">🥇</span>
+                <p><strong>Dica de ouro:</strong> o cavalo deve ter <em>acesso constante à água</em> e ao feno. A alimentação deve ser dividida em várias pequenas refeições ao longo do dia.</p>
+            </div>
+
+            <h4>🛠️ Objetos essenciais</h4>
+            <div class="lista-objetos">
+                <div class="objeto-item"><span class="obj-emoji">🏠</span><div class="obj-texto"><strong>Baia espaçosa</strong>Com acesso a área externa</div></div>
+                <div class="objeto-item"><span class="obj-emoji">🌿</span><div class="obj-texto"><strong>Pasto amplo</strong>Para pastejo e movimento</div></div>
+                <div class="objeto-item"><span class="obj-emoji">🧹</span><div class="obj-texto"><strong>Kit de limpeza de cascos</strong>Higiene diária essencial</div></div>
+                <div class="objeto-item"><span class="obj-emoji">🪢</span><div class="obj-texto"><strong>Corda e cabresto</strong>Para manejo seguro</div></div>
+                <div class="objeto-item"><span class="obj-emoji">🧺</span><div class="obj-texto"><strong>Cama seca e limpa</strong>Para descanso confortável</div></div>
+                <div class="objeto-item"><span class="obj-emoji">🌡️</span><div class="obj-texto"><strong>Abrigo contra sol e chuva</strong>Proteção essencial</div></div>
+            </div>
+            <div class="alerta"><strong>⚠️ Atenção:</strong> cavalos são animais sociais — precisam de companhia e espaço. Exigem dedicação diária, ferrageamento regular e custos significativos.</div>
+        </div>
+
+        <!-- COELHO -->
+        <div class="guia-bloco painel-animal" id="painel-coelho">
+            <h3>🐰 Coelho</h3>
+            <p><strong>Origem:</strong> Europa · <strong>Expectativa de vida:</strong> 8–12 anos · <strong>Hábitos:</strong> crepuscular (ativo ao amanhecer e anoitecer)</p>
+
+            <h4>🍖 Alimentação</h4>
+            <div class="colunas-dicas">
+                <div class="coluna-dica">
+                    <h5>✅ O que dar</h5>
+                    <ul>
+                        <li><strong>Feno de gramíneas à vontade 24h</strong> — 70% a 80% da dieta</li>
+                        <li>Vegetais folhosos verdes — 15% a 20%</li>
+                        <li>Ração específica — 5% a 15%</li>
+                        <li>Frutas e cenoura — no máximo 5% (petisco)</li>
+                    </ul>
+                </div>
+                <div class="coluna-dica">
+                    <h5>🚫 O que evitar</h5>
+                    <ul>
+                        <li>Cenoura como alimento principal (alto açúcar)</li>
+                        <li>Alface iceberg (pouco nutritiva)</li>
+                        <li>Mudanças bruscas de alimento</li>
+                        <li>Banho de água</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="dica-ouro">
+                <span class="icone-ouro">🥇</span>
+                <p><strong>Dica de ouro:</strong> o feno é a base de tudo — ele desgasta os dentes e mantém o intestino funcionando. <em>Nunca</em> deixe o coelho sem feno!</p>
+            </div>
+
+            <h4>🛠️ Objetos essenciais</h4>
+            <div class="lista-objetos">
+                <div class="objeto-item"><span class="obj-emoji">🏠</span><div class="obj-texto"><strong>Espaço de 2 m² ou mais</strong>Para correr e pular livremente</div></div>
+                <div class="objeto-item"><span class="obj-emoji">🪵</span><div class="obj-texto"><strong>Piso antiderrapante</strong>Nunca grade — evita lesões</div></div>
+                <div class="objeto-item"><span class="obj-emoji">🚽</span><div class="obj-texto"><strong>Caixa de areia</strong>Eles aprendem fácil a usar</div></div>
+                <div class="objeto-item"><span class="obj-emoji">🕳️</span><div class="obj-texto"><strong>Toca com duas saídas</strong>Para não ficar preso</div></div>
+                <div class="objeto-item"><span class="obj-emoji">🪥</span><div class="obj-texto"><strong>Galhos e brinquedos para roer</strong>Desgastam os dentes</div></div>
+                <div class="objeto-item"><span class="obj-emoji">🥤</span><div class="obj-texto"><strong>Bebedouro de garrafa</strong>Evita queixo molhado</div></div>
+            </div>
+            <div class="alerta"><strong>⚠️ Atenção:</strong> não dê banho. Se o coelho parar de comer ou de defecar, procure veterinário imediatamente — estase gastrointestinal é grave.</div>
+        </div>
+    </section>
+
+    <!-- ===== CONSELHEIRO VIRTUAL ===== -->
+    <section id="conselheiro">
+        <h2>🤖 Conselheiro Virtual</h2>
+        <p>
+            Tem dúvidas sobre como cuidar do seu animal? Converse com o nosso assistente virtual!
+            Ele responde perguntas sobre <strong>alimentação</strong>, <strong>moradia</strong>,
+            <strong>saúde</strong> e <strong>cuidados gerais</strong> para cada espécie.
+        </p>
+
+        <div class="chat-container">
+            <div class="chat-header">
+                <span class="status"></span>
+                Conselheiro Virtual · Online
+                <span class="contexto" id="chatContexto">Geral</span>
+            </div>
+            <div class="chat-mensagens" id="chatMensagens">
+                <div class="msg bot">
+                    Olá! 🐾 Sou o Conselheiro Virtual. Escolha um animal no menu principal para eu focar as respostas nele, ou me pergunte sobre qualquer espécie!
+                    <div class="sugestoes" id="sugestoesIniciais">
+                        <button onclick="perguntarRapido('Como cuidar de coelho?')">Cuidar de coelho</button>
+                        <button onclick="perguntarRapido('O que dar de comida para hamster?')">Comida de hamster</button>
+                        <button onclick="perguntarRapido('Furão pode comer fruta?')">Furão e frutas</button>
+                    </div>
+                </div>
+            </div>
+            <div class="chat-input-area">
+                <input type="text" id="chatInput" placeholder="Digite sua dúvida..." onkeypress="if(event.key==='Enter') enviarMensagem()">
+                <button onclick="enviarMensagem()">Enviar</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== ONDE ADOTAR / COMPRAR ===== -->
+    <section id="adocao">
+        <h2>📍 Onde Adotar ou Comprar</h2>
+        <p>
+            Antes de adquirir qualquer animal, é fundamental entender as <strong>diferenças legais</strong>
+            e priorizar sempre o <strong>bem-estar animal</strong>. Abaixo, orientações gerais por tipo de animal.
+        </p>
+
+        <div class="adocao-grid">
+            <div class="adocao-card">
+                <h4>🏠 Animais Domésticos (Cães, Gatos, Coelhos, Hamsters, Porquinhos-da-Índia)</h4>
+                <p>
+                    Para esses animais, a melhor opção é a <strong>adoção</strong> em abrigos, feiras de adoção
+                    ou grupos de resgate. Se optar por comprar, procure criadores registrados e que forneçam
+                    <strong>certificado de origem</strong> e histórico de saúde.
+                </p>
+                <div class="aviso-legal">
+                    <strong>⚠️ Importante:</strong> prefira sempre locais que ofereçam orientação sobre os cuidados
+                    e que mantenham os animais em condições adequadas.
+                </div>
+            </div>
+
+            <div class="adocao-card">
+                <h4>🐭 Chinchilas, Furões e Espécies Exóticas</h4>
+                <p>
+                    Esses animais são considerados <strong>fauna exótica</strong> (não são nativos do Brasil).
+                    A aquisição deve ser feita em <strong>criadores comerciais autorizados pelo órgão ambiental
+                    estadual</strong> (SISFAUNA ou equivalente). Exija sempre a <strong>nota fiscal e o
+                    certificado de origem</strong>.
+                </p>
+                <div class="aviso-legal">
+                    <strong>⚠️ Legalidade:</strong> o certificado de origem é o comprovante essencial da
+                    procedência legal do animal. Sem ele, a posse pode ser considerada irregular.
+                </div>
+            </div>
+
+            <div class="adocao-card">
+                <h4>🐍 Cobras e 🐒 Macacos (Fauna Silvestre)</h4>
+                <p>
+                    A criação de animais silvestres exige <strong>autorização do IBAMA</strong> ou do órgão
+                    ambiental estadual. Macacos, em especial, são <strong>rigorosamente regulamentados</strong>
+                    e seu manejo é complexo. A criação sem autorização é crime ambiental
+                    (Lei 9.605/98, art. 29).
+                </p>
+                <div class="aviso-legal">
+                    <strong>⚠️ Atenção:</strong> muitas espécies de primatas e répteis só podem ser adquiridas
+                    de criadouros legalizados, com documentação específica.
+                </div>
+            </div>
+
+            <div class="adocao-card">
+                <h4>🐴 Cavalos</h4>
+                <p>
+                    A compra de cavalos deve ser feita com <strong>acompanhamento de um veterinário
+                    especializado</strong>. Verifique a saúde do animal, o histórico de vacinas e o
+                    ferrageamento. Priorize haras e criadores com boa reputação.
+                </p>
+                <div class="aviso-legal">
+                    <strong>💡 Dica:</strong> cavalos exigem espaço, companhia (são animais sociais) e
+                    custos significativos de manutenção.
+                </div>
+            </div>
+        </div>
+
+        <div class="alerta" style="margin-top: 20px;">
+            <strong>💡 Recomendação geral:</strong> pesquise sempre sobre a legalidade da espécie no seu
+            estado, visite o local de venda/adocão, converse com outros criadores e consulte um
+            <strong>veterinário especializado em animais exóticos ou silvestres</strong> antes de adquirir.
+            O bem-estar do animal deve vir sempre em primeiro lugar. 🐾
+        </div>
+    </section>
+
+    <!-- Contato -->
+    <section id="contato">
+        <h2>💌 Fale Comigo</h2>
+        <p>Tem dúvidas sobre como cuidar do seu animal? Me mande uma mensagem!</p>
+        <form id="formContato">
+            <input type="text" placeholder="Seu nome 🐾" required>
+            <input type="email" placeholder="Seu e-mail 🐾" required>
+            <select required>
+                <option value="">Qual é o seu animal? 🐾</option>
+                <option value="chinchila">Chinchila 🐭</option>
+                <option value="hamster">Hamster 🐹</option>
+                <option value="porquinho">Porquinho-da-Índia 🐹</option>
+                <option value="esquilo">Esquilo 🐿️</option>
+                <option value="furao">Furão 🦡</option>
+                <option value="cobra">Cobra 🐍</option>
+                <option value="macaco">Macaco 🐒</option>
+                <option value="cavalo">Cavalo 🐴</option>
+                <option value="coelho">Coelho 🐰</option>
+                <option value="outro">Outro 🐾</option>
+            </select>
+            <textarea rows="4" placeholder="Sua dúvida ou mensagem... 💕" required></textarea>
+            <button type="submit">Enviar Mensagem 🐾</button>
+        </form>
+    </section>
+
+    <footer>
+        Feito com <span class="coracao">💖</span> para ajudar você a cuidar do seu animal 🐾
+        <br><small>&copy; 2024 Guia do Animal, Minha Vida — Sempre consulte um veterinário!</small>
+    </footer>
+
+    <!-- Animal flutuante -->
+    <div class="animal-flutuante" id="animalFlutuante" title="Clique em mim!">🐾</div>
+    <div class="mensagem-fofa" id="mensagemFofa">Você é incrível! 🐾💕</div>
+
+    <script>
+        // ===== SISTEMA DE ABAS =====
+        const abasBtns = document.querySelectorAll('.aba-btn');
+        const paineis = document.querySelectorAll('.painel-animal');
+
+        function abrirAba(nomeAnimal) {
+            abasBtns.forEach(b => b.classList.remove('ativa'));
+            paineis.forEach(p => p.classList.remove('ativo'));
+
+            const btn = document.querySelector(`.aba-btn[data-animal="${nomeAnimal}"]`);
+            const painel = document.getElementById(`painel-${nomeAnimal}`);
+            if (btn && painel) {
+                btn.classList.add('ativa');
+                painel.classList.add('ativo');
+            }
+
+            definirContextoChat(nomeAnimal);
+
+            document.getElementById('guia').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        abasBtns.forEach(btn => {
+            btn.addEventListener('click', () => abrirAba(btn.dataset.animal));
+        });
+
+        // ===== TELA INICIAL / MENU PRINCIPAL =====
+        const telaInicial = document.getElementById('telaInicial');
+        const btnVerTodos = document.getElementById('btnVerTodos');
+
+        function escolherAnimal(nomeAnimal) {
+            telaInicial.classList.add('escondida');
+
+            if (nomeAnimal) {
+                document.body.classList.add('modo-animal-unico');
+                btnVerTodos.classList.add('visivel');
+
+                abasBtns.forEach(b => b.classList.remove('ativa'));
+                paineis.forEach(p => p.classList.remove('ativo'));
+
+                const btn = document.querySelector(`.aba-btn[data-animal="${nomeAnimal}"]`);
+                const painel = document.getElementById(`painel-${nomeAnimal}`);
+                if (btn) btn.classList.add('ativa');
+                if (painel) painel.classList.add('ativo');
+
+                definirContextoChat(nomeAnimal);
+
+                setTimeout(() => {
+                    document.getElementById('guia').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 350);
+            } else {
+                document.body.classList.remove('modo-animal-unico');
+                btnVerTodos.classList.remove('visivel');
+                definirContextoChat(null);
+                setTimeout(() => {
+                    document.getElementById('animais').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 300);
+            }
+        }
+
+        function voltarAoMenu() {
+            telaInicial.classList.remove('escondida');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function verTodosAnimais() {
+            document.body.classList.remove('modo-animal-unico');
+            btnVerTodos.classList.remove('visivel');
+            definirContextoChat(null);
+            document.getElementById('animais').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // ===== CONSELHEIRO VIRTUAL =====
+        const chatMensagens = document.getElementById('chatMensagens');
+        const chatInput = document.getElementById('chatInput');
+        const chatContexto = document.getElementById('chatContexto');
+
+        let animalContexto = null;
+
+        const conhecimento = {
+            'chinchila': {
+                nome: 'Chinchila',
+                dicas: [
+                    'Feno de gramíneas à vontade 24h é a base da dieta. Ofereça capim timothy ou orchard.',
+                    'Nunca dê banho de água! Chinchilas tomam banho de areia vulcânica para limpar o pelo.',
+                    'Ambiente ideal entre 15°C e 22°C. Elas sofrem muito com calor.',
+                    'Gaiola alta com prateleiras é essencial — elas adoram escalar.',
+                    'Evite açúcar, chocolate e alimentos gordurosos.'
+                ]
+            },
+            'hamster': {
+                nome: 'Hamster',
+                dicas: [
+                    'Ração própria para hamsters (mistura de sementes) é a base.',
+                    'Ofereça pequenas porções de vegetais frescos (cenoura, brócolis, pepino).',
+                    'Roda de exercício é essencial — sem grades que prendam as patas.',
+                    'São solitários: geralmente devem ficar sozinhos na gaiola.',
+                    'Evite chocolate, doces, cítricos e excesso de sementes de girassol.'
+                ]
+            },
+            'porquinho': {
+                nome: 'Porquinho-da-Índia',
+                dicas: [
+                    'Feno de gramíneas à vontade 24h + vitamina C diária (essencial!).',
+                    'Ofereça pimentão vermelho, couve e brócolis (ricos em vitamina C).',
+                    'São sociais: prefira criar em pares ou grupos.',
+                    'Gaiola ampla com fundo sólido (nunca grade no chão).',
+                    'Evite alface iceberg e ração de coelho (não tem vitamina C).'
+                ]
+            },
+            'esquilo': {
+                nome: 'Esquilo',
+                dicas: [
+                    'Nozes, sementes, frutas e vegetais variados. Cálcio é essencial.',
+                    'Gaiola ampla com poleiros e cordas para escalar.',
+                    'Precisam de muito estímulo mental e tempo fora da gaiola.',
+                    'Verifique a legislação local — criação pode ser regulamentada.',
+                    'Evite alimentos processados, salgados e doces.'
+                ]
+            },
+            'furao': {
+                nome: 'Furão',
+                dicas: [
+                    'Carnívoro obrigatório! Ração específica rica em proteína animal.',
+                    'Nunca dê açúcar, frutas ou vegetais.',
+                    'Gaiola grande com plataformas e redes para escalar.',
+                    'São mestres do escape — use travas de segurança.',
+                    'Precisam de vacinas e check-ups regulares.'
+                ]
+            },
+            'cobra': {
+                nome: 'Cobra',
+                dicas: [
+                    'Dieta baseada em presas inteiras (ratos/camundongos), congeladas e descongeladas.',
+                    'Nunca alimente com presas vivas — podem ferir a cobra.',
+                    'Terrário com aquecimento adequado e gradiente de temperatura.',
+                    'Controle rigoroso de umidade para troca de pele.',
+                    'Muitas espécies exigem autorização do IBAMA.'
+                ]
+            },
+            'macaco': {
+                nome: 'Macaco',
+                dicas: [
+                    'Dieta variada: frutas, vegetais, folhas e ração para primatas.',
+                    'Espaço muito amplo com poleiros, cordas e brinquedos.',
+                    'São extremamente inteligentes — precisam de estímulo constante.',
+                    'Criação rigorosamente regulamentada no Brasil (IBAMA).',
+                    'Evite comida humana processada, doces e salgados.'
+                ]
+            },
+            'cavalo': {
+                nome: 'Cavalo',
+                dicas: [
+                    'Feno e pasto à vontade — base da dieta.',
+                    'Ração específica, sal mineral e água fresca sempre.',
+                    'Baia espaçosa com acesso a área externa.',
+                    'Ferrageamento regular e cuidados com os cascos.',
+                    'São animais sociais — precisam de companhia.'
+                ]
+            },
+            'coelho': {
+                nome: 'Coelho',
+                dicas: [
+                    'Feno de gramíneas à vontade 24h (70-80% da dieta).',
+                    'Vegetais folhosos verdes (15-20%) e ração específica (5-15%).',
+                    'Frutas e cenoura: no máximo 5% (petisco).',
+                    'Espaço de pelo menos 2 m² para correr e pular.',
+                    'Nunca dê banho. Se parar de comer, procure veterinário imediatamente.'
+                ]
+            }
+        };
+
+        function definirContextoChat(nomeAnimal) {
+            animalContexto = nomeAnimal;
+            if (nomeAnimal && conhecimento[nomeAnimal]) {
+                chatContexto.textContent = `🐾 ${conhecimento[nomeAnimal].nome}`;
+                chatMensagens.innerHTML = '';
+                const info = conhecimento[nomeAnimal];
+                const dicaAleatoria = info.dicas[Math.floor(Math.random() * info.dicas.length)];
+                adicionarMensagem(
+                    `Agora estou focado em <strong>${info.nome}</strong>! 🐾<br><br>` +
+                    `Pode me perguntar qualquer dúvida sobre alimentação, moradia, saúde ou cuidados.<br><br>` +
+                    `💡 <em>${dicaAleatoria}</em>`,
+                    'bot'
+                );
+            } else {
+                chatContexto.textContent = 'Geral';
+                chatMensagens.innerHTML = '';
+                adicionarMensagem(
+                    `Olá! 🐾 Sou o Conselheiro Virtual. Escolha um animal no menu principal para eu focar as respostas nele, ou me pergunte sobre qualquer espécie!`,
+                    'bot'
+                );
+            }
+        }
+
+        function adicionarMensagem(texto, tipo) {
+            const div = document.createElement('div');
+            div.className = `msg ${tipo}`;
+            div.innerHTML = texto;
+            chatMensagens.appendChild(div);
+            chatMensagens.scrollTop = chatMensagens.scrollHeight;
+        }
+
+        function gerarResposta(pergunta) {
+            const texto = pergunta.toLowerCase();
+
+            let animalDetectado = null;
+            const nomes = {
+                'chinchila': 'chinchila', 'hamster': 'hamster', 'porquinho': 'porquinho',
+                'porquinho-da-índia': 'porquinho', 'esquilo': 'esquilo', 'furao': 'furao',
+                'furão': 'furao', 'cobra': 'cobra', 'macaco': 'macaco', 'cavalo': 'cavalo',
+                'coelho': 'coelho'
+            };
+            for (const [chave, valor] of Object.entries(nomes)) {
+                if (texto.includes(chave)) { animalDetectado = valor; break; }
+            }
+
+            const alvo = animalDetectado || animalContexto;
+
+            if (alvo && conhecimento[alvo]) {
+                const info = conhecimento[alvo];
+                const dicas = info.dicas;
+
+                let dicasRelevantes = dicas;
+                if (texto.includes('comida') || texto.includes('comer') || texto.includes('alimenta') || texto.includes('ração')) {
+                    dicasRelevantes = dicas.filter(d => d.toLowerCase().includes('dieta') || d.toLowerCase().includes('ração') || d.toLowerCase().includes('comida') || d.toLowerCase().includes('comer') || d.toLowerCase().includes('feno') || d.toLowerCase().includes('carnívoro'));
+                } else if (texto.includes('gaiola') || texto.includes('moradia') || texto.includes('casa') || texto.includes('terrário') || texto.includes('espaço')) {
+                    dicasRelevantes = dicas.filter(d => d.toLowerCase().includes('gaiola') || d.toLowerCase().includes('espaço') || d.toLowerCase().includes('terrário') || d.toLowerCase().includes('baia'));
+                } else if (texto.includes('banho') || texto.includes('limpeza')) {
+                    dicasRelevantes = dicas.filter(d => d.toLowerCase().includes('banho') || d.toLowerCase().includes('areia'));
+                } else if (texto.includes('doente') || texto.includes('doença') || texto.includes('veterinário') || texto.includes('saúde')) {
+                    dicasRelevantes = dicas.filter(d => d.toLowerCase().includes('veterinário') || d.toLowerCase().includes('vacina') || d.toLowerCase().includes('check-up') || d.toLowerCase().includes('doença'));
+                }
+
+                if (dicasRelevantes.length === 0) dicasRelevantes = dicas;
+
+                let resposta = `Sobre o <strong>${info.nome}</strong>:<br><br>`;
+                const principal = dicasRelevantes[Math.floor(Math.random() * dicasRelevantes.length)];
+                resposta += `💡 ${principal}<br>`;
+
+                const outras = dicasRelevantes.filter(d => d !== principal).slice(0, 2);
+                if (outras.length > 0) {
+                    resposta += `<br>Outras dicas:<br>`;
+                    outras.forEach(d => { resposta += `• ${d}<br>`; });
+                }
+
+                return resposta;
+            }
+
+            if (texto.includes('água') || texto.includes('beber')) {
+                return `Todos os animais precisam de <strong>água fresca e limpa</strong> diariamente! 💧<br><br>
+                    Use bebedouro adequado à espécie e troque a água todos os dias.`;
+            }
+
+            if (texto.includes('oi') || texto.includes('olá') || texto.includes('ola') || texto.includes('bom dia') || texto.includes('boa tarde')) {
+                return `Olá! 🐾 Como posso ajudar?<br><br>
+                    Posso dar dicas sobre alimentação, moradia, saúde e cuidados para:<br>
+                    🐭 Chinchila · 🐹 Hamster · 🐹 Porquinho-da-Índia · 🐿️ Esquilo · 🦡 Furão<br>
+                    🐍 Cobra · 🐒 Macaco · 🐴 Cavalo · 🐰 Coelho<br><br>
+                    Qual animal você quer saber?`;
+            }
+
+            if (texto.includes('obrigado') || texto.includes('obrigada') || texto.includes('valeu')) {
+                return `De nada! 🐾💕 Se tiver mais dúvidas, é só perguntar.<br><br>
+                    Lembre-se: sempre consulte um veterinário especializado!`;
+            }
+
+            return `Não entendi muito bem, mas posso ajudar com dúvidas sobre:<br><br>
+                🍖 <strong>Alimentação</strong> — o que dar e o que evitar<br>
+                🏠 <strong>Moradia</strong> — gaiolas, terrários e acessórios<br>
+                💊 <strong>Saúde</strong> — sinais de alerta e cuidados<br>
+                🧹 <strong>Higiene</strong> — limpeza e banho<br><br>
+                ${animalContexto ? `Estou focado em <strong>${conhecimento[animalContexto].nome}</strong> — pode perguntar sobre ele!` : 'Me diga qual animal você tem e sua dúvida!'}`;
+        }
+
+        function enviarMensagem() {
+            const texto = chatInput.value.trim();
+            if (!texto) return;
+            adicionarMensagem(texto, 'user');
+            chatInput.value = '';
+            setTimeout(() => {
+                adicionarMensagem(gerarResposta(texto), 'bot');
+            }, 500);
+        }
+
+        function perguntarRapido(texto) {
+            chatInput.value = texto;
+            enviarMensagem();
+        }
+
+        // ===== MENSAGENS ALEATÓRIAS =====
+        const mensagens = [
+            "Você é incrível! 🐾💕", "Petisco para você! 🍖", "Pulo de alegria! 🐾✨",
+            "Seu animal ama você! 💖", "Dia fofo para você! 🌸", "Carinho em dobro! 🎉🐾",
+            "Patas felizes! 🐾💕", "Você é fofo como um animal! 🥰", "Chinchila aprovado! 🐭",
+            "Hamster mandou um oi! 🐹", "Porquinho-da-índia comilão! 🐹", "Esquilo saltitante! 🐿️",
+            "Furão curioso! 🦡", "Cobra elegante! 🐍", "Macaco travesso! 🐒",
+            "Cavalo majestoso! 🐴", "Coelho orelhudo! 🐰"
+        ];
+
+        const animal = document.getElementById('animalFlutuante');
+        const msg = document.getElementById('mensagemFofa');
+
+        animal.addEventListener('click', () => {
+            const aleatoria = mensagens[Math.floor(Math.random() * mensagens.length)];
+            msg.textContent = aleatoria;
+            msg.classList.add('ativo');
+            setTimeout(() => msg.classList.remove('ativo'), 1500);
+        });
+
+        // ===== FORMULÁRIO =====
+        document.getElementById('formContato').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Mensagem enviada com sucesso! 🐾💕 Obrigado por compartilhar!');
+            e.target.reset();
+        });
+
+        // ===== SCROLL SUAVE =====
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                document.querySelector(link.getAttribute('href')).scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+
+        abrirAba('chinchila');
+    </script>
+
+</body>
+</html>
